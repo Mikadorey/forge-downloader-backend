@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>Privacy Policy — Forge Downloader</title>
+  <meta name="description" content="Forge Downloader respects your privacy. Learn what information we collect, how we use cookies, and our commitment to keeping your data safe." />
+  <meta name="keywords" content="Forge Downloader, privacy policy, cookies, data protection, online downloader" />
+  <link rel="canonical" href="https://www.forgedownloader.com/privacy.html" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Privacy Policy — Forge Downloader" />
+  <meta property="og:description" content="Forge Downloader respects your privacy. Learn what information we collect, how we use cookies, and our commitment to keeping your data safe." />
+  <meta property="og:url" content="https://www.forgedownloader.com/privacy.html" />
+  <meta property="og:site_name" content="Forge Downloader" />
+  <meta property="og:image" content="https://www.forgedownloader.com/og-image.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@one_minute_power" />
+  <meta name="twitter:title" content="Privacy Policy — Forge Downloader" />
+  <meta name="twitter:description" content="Forge Downloader respects your privacy. Learn what information we collect, how we use cookies, and our commitment to keeping your data safe." />
+  <meta name="twitter:image" content="https://www.forgedownloader.com/og-image.png" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Privacy Policy",
+    "url": "https://www.forgedownloader.com/privacy.html",
+    "description": "Forge Downloader respects your privacy. Learn what information we collect, how we use cookies, and our commitment to keeping your data safe."
+  }
+  </script>
+
+  <!-- Styles -->
+  <style>
+    :root {
+      --bg-color: #0f0f0f;
+      --text-color: #fff;
+      --accent: #ffd700;
+      --btn-bg: rgba(255,255,255,0.1);
+      --btn-hover: rgba(255,255,255,0.2);
+      --glass: rgba(255,255,255,0.05);
+      --maxw: 800px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    canvas#bgCanvas {
+      position: fixed;
+      top: 0; left:0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: var(--maxw);
+      margin: 40px auto;
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'AesteraBlur-Bold', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 20px;
+      background: linear-gradient(90deg, var(--accent), #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 2s infinite linear;
+    }
+
+    @keyframes shine {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    p { line-height: 1.6; margin-bottom: 15px; color: var(--text-color); }
+    a.liquid-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 15px;
+      background: var(--btn-bg);
+      color: var(--text-color);
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+    a.liquid-btn:hover { background: var(--btn-hover); }
+
+    /* Theme & Background Toggle Buttons */
+    #themeToggle, #bgToggle {
+      position: absolute;
+      top: 20px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      transition: 0.3s;
+      z-index: 10;
+      background: var(--btn-bg);
+      color: var(--text-color);
+    }
+    #themeToggle { right: 20px; }
+    #bgToggle { left: 20px; }
+    #themeToggle:hover, #bgToggle:hover { background: var(--btn-hover); }
+
+    /* Footer */
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 0.9rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    footer a {
+      background: rgba(255,255,255,0.08);
+      padding: 8px 16px;
+      border-radius: 20px;
+      text-decoration: none;
+      color: var(--accent);
+      transition: background 0.3s, transform 0.2s;
+    }
+    footer a:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+
+    /* Optional Ad Section */
+    .ad-section {
+      margin: 20px auto;
+      padding: 10px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    /* Cookie Consent Banner */
+    #cookieConsent {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 15px 20px;
+      border-radius: 15px;
+      font-size: 0.9rem;
+      z-index: 100;
+      display: none;
+      text-align: center;
+    }
+    #cookieConsent button {
+      margin-left: 10px;
+      padding: 5px 12px;
+      border-radius: 10px;
+      border: none;
+      background: var(--accent);
+      color: #000;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .container { margin: 20px 10px; padding: 20px; }
+      #cookieConsent { font-size: 0.8rem; padding: 10px 15px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Theme & Background Toggles -->
+  <div id="themeToggle" title="Toggle Theme">🌙</div>
+  <div id="bgToggle" title="Change Background">✨</div>
+
+  <div class="container">
+    <h1>Privacy Policy</h1>
+
+    <p>Forge Downloader is designed to allow users to download content from supported platforms including YouTube, Instagram, TikTok, X (Twitter), Facebook, and Pinterest. We value your privacy and are committed to keeping your data safe.</p>
+
+    <p><strong>Information We Collect</strong><br>
+    We do not collect personally identifiable information unless voluntarily provided (via contact forms or emails). No links, media files, or download history are stored.</p>
+
+    <p><strong>Cookies & Analytics</strong><br>
+    Forge Downloader may use cookies and Google Analytics 4 (GA4) to analyze traffic and improve user experience. Only anonymous data like pages visited, device type, and browser information is collected. Users may opt-out as described below.</p>
+
+    <p><strong>Advertising</strong><br>
+    Google Ads or other ad services may use cookies to deliver ads. No personal data is sold or shared outside of analytics and ad providers.</p>
+
+    <p><strong>Third-Party Platforms</strong><br>
+    Forge Downloader is not affiliated with YouTube, Instagram, TikTok, X, Facebook, Pinterest, or other platforms. All trademarks belong to their respective owners.</p>
+
+    <p><strong>Your Consent</strong><br>
+    By using this site, you agree to the terms outlined in this Privacy Policy. You can manage cookie preferences via the banner below.</p>
+
+    <!-- Optional AdSense-safe Inline Ad -->
+    <div class="ad-section">
+      <p>Advertisement</p>
+      <img src="https://via.placeholder.com/468x60?text=Inline+Ad" alt="Inline ad">
+    </div>
+
+    <a href="index.html" class="liquid-btn">Back to Home</a>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="contact.html">Contact</a>
+  </footer>
+
+  <!-- Cookie Consent Banner -->
+  <div id="cookieConsent">
+    We use cookies and Google Analytics to enhance your experience. By clicking "Accept", you consent to anonymous analytics collection.
+    <button id="acceptCookies">Accept</button>
+  </div>
+
+  <!-- Scripts -->
+  <script src="bg.js" defer></script>
+  <script src="theme.js" defer></script>
+
+  <!-- GA4 (only fires after consent) -->
+  <script>
+    const cookieConsent = document.getElementById('cookieConsent');
+    const acceptBtn = document.getElementById('acceptCookies');
+
+    // Show banner if no consent
+    if(!localStorage.getItem('ga_consent')){
+      cookieConsent.style.display = 'block';
+    }
+
+    acceptBtn.addEventListener('click', () => {
+      localStorage.setItem('ga_consent', 'true');
+      cookieConsent.style.display = 'none';
+
+      // Load GA4 script
+      const gtagScript = document.createElement('script');
+      gtagScript.async = true;
+      gtagScript.src = 'https://www.googletagmanager.com/gtag/js?id=G-ZY7TB5R7KD'; // replace with your GA4 Measurement ID
+      document.head.appendChild(gtagScript);
+
+      gtagScript.onload = () => {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-ZY7TB5R7KD'); // replace with your GA4 Measurement ID
+      };
+    });
+  </script>
+
+</body>
+</html>

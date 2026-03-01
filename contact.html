@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Forge Downloader</title>
+  <style>
+    :root {
+      --bg-color: #0f0f0f;
+      --text-color: #fff;
+      --btn-bg: rgba(255,255,255,0.1);
+      --btn-hover: rgba(255,255,255,0.2);
+    }
+
+    body {
+      margin:0; 
+      font-family:'Segoe UI',Roboto,sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    canvas#bgCanvas {
+      position: fixed;
+      top: 0; left:0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      max-width:800px;
+      margin: 40px auto;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 20px;
+      color: var(--text-color);
+      text-align:center;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      font-family:'AesteraBlur-Bold',sans-serif;
+      font-size:2rem;
+      margin-bottom:20px;
+      background: linear-gradient(90deg, #ffd700, #fff);
+      -webkit-background-clip: text;
+      background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation: shine 2s infinite linear;
+    }
+    @keyframes shine { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
+
+    p, a { line-height:1.6; margin-bottom: 15px; color: var(--text-color); }
+    a { text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    a.liquid-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+    a.liquid-btn:hover { background: rgba(255,255,255,0.25); }
+
+    /* Theme & Background Toggle Buttons */
+    #themeToggle, #bgToggle {
+      position:absolute; top:20px; cursor:pointer; font-size:1.2rem;
+      background: var(--btn-bg); padding:6px 12px; border-radius:20px; transition:0.3s; z-index:10;
+      color: var(--text-color);
+    }
+    #themeToggle:hover, #bgToggle:hover { background: var(--btn-hover); }
+    #themeToggle { right:20px; }
+    #bgToggle { left:20px; }
+
+    /* Modern Footer Buttons */
+    footer {
+      margin-top: 40px;
+      text-align:center;
+      font-size:0.9rem;
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    footer a {
+      background: rgba(255,255,255,0.08);
+      padding:8px 16px;
+      border-radius:20px;
+      text-decoration:none; /* no underline */
+      color:#ffd700;
+      transition: background 0.3s, transform 0.2s;
+    }
+    footer a:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+      text-decoration: none; /* prevents underline on hover */
+    }
+
+    @media (max-width:600px){
+      .container { margin: 20px 10px; padding:20px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Theme & Background Toggles -->
+  <div id="themeToggle" title="Toggle Theme">🌙</div>
+  <div id="bgToggle" title="Change Background">✨</div>
+
+  <div class="container">
+    <h1>Contact Us</h1>
+    <p>If you have any questions, feedback, or need support, please reach out to us at:</p>
+    <p><a href="mailto:info@forgedownloader.com" class="liquid-btn">info@forgedownloader.com</a></p>
+    <p>We will respond as quickly as possible.</p>
+    <a href="index.html" class="liquid-btn">Back to Home</a>
+  </div>
+
+  <!-- Modern Footer -->
+  <footer>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="contact.html">Contact</a>
+  </footer>
+
+  <script src="bg.js"></script>
+  <script src="theme.js"></script>
+</body>
+</html>

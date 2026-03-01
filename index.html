@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>Free Video Downloader for YouTube, TikTok & Instagram | Forge Downloader</title>
+
+  <!-- Primary SEO -->
+  <meta name="description" content="Free online video downloader for YouTube, TikTok, Instagram, Facebook, X and Pinterest. Download videos in MP4 or MP3 (1080p, 720p) fast, secure and without registration." />
+  <meta name="keywords" content="free video downloader, youtube downloader, youtube to mp3, tiktok downloader without watermark, instagram reel downloader, facebook video downloader, twitter x downloader, pinterest downloader, mp4 download, mp3 download" />
+  <meta name="author" content="Forge Downloader" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://www.forgedownloader.com/" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Free Video Downloader | Forge Downloader" />
+  <meta property="og:description" content="Download videos and audio from YouTube, TikTok, Instagram, Facebook, X and Pinterest. Fast, secure and free." />
+  <meta property="og:url" content="https://www.forgedownloader.com/" />
+  <meta property="og:site_name" content="Forge Downloader" />
+  <meta property="og:image" content="https://www.forgedownloader.com/og-image.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Free Video Downloader | Forge Downloader" />
+  <meta name="twitter:description" content="Download videos and audio from YouTube, TikTok, Instagram, Facebook, X and Pinterest." />
+  <meta name="twitter:image" content="https://www.forgedownloader.com/og-image.png" />
+
+  <!-- Structured Data: Website -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Forge Downloader",
+    "url": "https://www.forgedownloader.com/"
+  }
+  </script>
+
+  <!-- Structured Data: Software Application -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Forge Downloader",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <!-- Structured Data: FAQ -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is Forge Downloader free to use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, Forge Downloader is completely free for personal use."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to create an account?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No registration is required to download videos or audio."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I download MP3 audio?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, you can download audio in MP3 format from supported platforms."
+        }
+      }
+    ]
+  }
+  </script>
+
+
+
+
+  <style>
+    :root{
+      --bg:#0f0f0f;
+      --text:#fff;
+      --glass:rgba(255,255,255,0.06);
+      --accent:#ffd700;
+      --btn-bg:rgba(255,255,255,0.08);
+      --btn-hover:rgba(255,255,255,0.12);
+      --maxw:760px;
+    }
+
+    html, body{
+      height:100%;
+      margin:0;
+      background:transparent !important;
+      color:var(--text);
+      font-family:'Segoe UI',Roboto,system-ui,Arial;
+    }
+
+    canvas#bgCanvas{
+      position:fixed;
+      inset:0;
+      width:100%;
+      height:100%;
+      z-index:-1;
+    }
+
+    .container{
+      width:94%;
+      max-width:var(--maxw);
+      margin:28px auto;
+      background:var(--glass);
+      backdrop-filter:blur(10px);
+      border-radius:18px;
+      padding:26px;
+      box-shadow:0 6px 30px rgba(0,0,0,0.45);
+      position:relative;
+    }
+
+    h1 {
+  font-family: 'AesteraBlur-Bold', sans-serif;
+  font-size: 2rem;
+  text-align: center;       /* centers the title horizontally */
+  margin: 50px 0 14px;      /* adds space on top so toggles don’t overlap */
+  background: linear-gradient(90deg, var(--accent), #fff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 2s linear infinite;
+}
+
+
+    @keyframes shine{
+      0%{background-position:-200% 0}
+      100%{background-position:200% 0}
+    }
+
+    .platforms{
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-bottom:14px;
+    }
+
+    .platform-btn{
+      padding:8px 14px;
+      border-radius:12px;
+      background:rgba(255,255,255,0.03);
+      border:1px solid rgba(255,255,255,0.03);
+      cursor:pointer;
+      font-weight:600;
+    }
+
+    .platform-btn.active{
+      background:linear-gradient(90deg,var(--accent),#ffd880);
+      color:#0a0a0a;
+      box-shadow:0 6px 18px rgba(255,215,0,0.12);
+    }
+
+    .url-input{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    input[type="text"]{
+      width:70%;
+      min-width:220px;
+      padding:12px;
+      border-radius:12px;
+      border:none;
+      background:rgba(0,0,0,0.25);
+      color:var(--text);
+    }
+
+    .small-btn{
+      padding:10px 14px;
+      border-radius:10px;
+      border:none;
+      background:var(--btn-bg);
+      color:var(--text);
+      cursor:pointer;
+    }
+    .small-btn:hover{background:var(--btn-hover)}
+
+    .preview{display:none;margin:16px 0;flex-direction:column;align-items:center;gap:8px}
+    .preview img{max-width:520px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.45)}
+    .meta-title{font-weight:700;word-break:break-word;padding:0 8px}
+
+    .controls-row{
+      display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;
+    }
+
+    select{
+      padding:10px;
+      border-radius:10px;
+      background:rgba(0,0,0,0.25);
+      color:var(--text);
+      border:none;
+    }
+
+    .download-buttons{display:flex;gap:10px;flex-wrap:wrap}
+    .primary-btn{
+      background:linear-gradient(90deg,var(--accent),#ffd880);
+      color:#0a0a0a;
+      padding:10px 16px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+    }
+
+    .secondary-btn{
+      background:var(--btn-bg);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:10px;
+      border:none;
+      cursor:pointer;
+    }
+
+    #progressContainer{
+      display:none;
+      align-items:center;
+      gap:10px;
+      justify-content:center;
+      margin-top:12px;
+    }
+
+    progress{
+      width:68%;
+      height:12px;
+      border-radius:6px;
+    }
+
+    .ad-section{
+      margin-top:18px;
+      background:rgba(255,255,255,0.03);
+      padding:10px;
+      border-radius:10px;
+      text-align:center;
+    }
+
+    footer{
+      margin-top:18px;
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    footer a{
+      display:inline-block;
+      background:rgba(255,255,255,0.04);
+      color:var(--accent);
+      padding:8px 16px;
+      border-radius:20px;
+      text-decoration:none;
+    }
+    footer a:hover{
+      transform:translateY(-3px);
+      background:rgba(255,255,255,0.07);
+    }
+
+    /* Pop-up AD */
+    #adModal{
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.8);
+      backdrop-filter:blur(5px);
+      z-index:9999;
+      align-items:center;
+      justify-content:center;
+    }
+
+    #adModalContent{
+      background:#0b0b0b;
+      padding:20px;
+      border-radius:12px;
+      max-width:420px;
+      width:92%;
+      text-align:center;
+      color:#fff;
+      position:relative;
+    }
+
+    #closeAd{
+      position:absolute;
+      right:12px;
+      top:10px;
+      cursor:pointer;
+      color:#fff;
+      font-size:1.3rem;
+    }
+
+    /* SEO content styles */
+    .seo-content{
+      margin:28px auto;
+      max-width:760px;
+      padding:18px;
+      background:rgba(255,255,255,0.04);
+      border-radius:12px;
+      color:#fff;
+      line-height:1.6;
+      font-size:0.95rem;
+    }
+
+    @media (max-width:720px){
+      input[type="text"]{width:64%}
+    }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZY7TB5R7KD"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-ZY7TB5R7KD');
+</script>
+
+</head>
+
+<body>
+
+  <canvas id="bgCanvas"></canvas>
+
+  <div class="container">
+    <h1>Forge Downloader</h1>
+
+    <!-- Toggles -->
+    <div id="bgToggle" style="position:absolute;left:16px;top:18px;padding:8px 12px;border-radius:20px;background:rgba(255,255,255,0.08);cursor:pointer;z-index:1000">✨</div>
+    <div id="themeToggle" style="position:absolute;right:16px;top:18px;padding:8px 12px;border-radius:20px;background:rgba(255,255,255,0.08);cursor:pointer;z-index:1000">🌙</div>
+
+    <!-- Platforms -->
+    <div class="platforms" id="platforms">
+      <div class="platform-btn active" data-platform="youtube">YouTube</div>
+      <div class="platform-btn" data-platform="tiktok">TikTok</div>
+      <div class="platform-btn" data-platform="instagram">Instagram</div>
+      <div class="platform-btn" data-platform="facebook">Facebook</div>
+      <div class="platform-btn" data-platform="x">X</div>
+      <div class="platform-btn" data-platform="pinterest">Pinterest</div>
+    </div>
+
+    <!-- URL Input -->
+    <div class="url-input">
+      <input type="text" id="urlField" placeholder="Paste YouTube URL here..." />
+      <button id="pasteBtn" class="small-btn">📋 Paste</button>
+      <button id="previewBtn" class="small-btn">Preview</button>
+    </div>
+
+    <!-- Preview -->
+    <div id="previewSection" class="preview">
+      <img id="thumbnail" src="" alt="Preview thumbnail">
+      <p id="videoTitle" class="meta-title"></p>
+    </div>
+
+    <!-- Options -->
+    <div class="controls-row">
+      <div>
+        <select id="qualitySelect">
+          <option value="best">Best available</option>
+          <option value="1080p">1080p</option>
+          <option value="720p">720p</option>
+          <option value="480p">480p</option>
+          <option value="360p">360p</option>
+          <option value="240p">240p</option>
+          <option value="144p">144p</option>
+          <option value="audio">Audio (MP3)</option>
+        </select>
+      </div>
+
+      <div class="download-buttons">
+        <button id="downloadVideo" class="primary-btn">Download Video</button>
+        <button id="downloadAudio" class="secondary-btn">Download Audio</button>
+        <button id="cancelBtn" class="secondary-btn">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Progress -->
+    <div id="progressContainer">
+      <progress id="progressBar" value="0" max="100"></progress>
+      <span id="progressText">0%</span>
+    </div>
+
+    <!-- Inline Ad -->
+    <div class="ad-section" id="inlineAd">
+      <p style="font-size:0.85rem;opacity:0.8;">Advertisement</p>
+      <img src="https://via.placeholder.com/468x60?text=Inline+Ad" alt="Inline ad">
+    </div>
+    
+
+    <div style="margin-top:14px;text-align:center">
+      <button id="downloadPC" class="small-btn">Get App (PC)</button>
+      <button id="downloadMobile" class="small-btn">Get App (Android)</button>
+    </div>
+    <p style="margin-top:20px;font-size:0.85rem;opacity:0.8;">
+Forge Downloader is not affiliated with YouTube, TikTok, Instagram, Facebook, X (Twitter), or Pinterest. 
+All trademarks belong to their respective owners. 
+Users are responsible for ensuring they have the right to download and use any content.
+</p>
+  </div>
+
+  <!-- SEO Content -->
+  <div class="seo-content">
+    <h2>Download Videos and Audio from Multiple Platforms</h2>
+    <p>Forge Downloader allows you to download videos and audio from YouTube, TikTok, Instagram, X, Facebook, and Pinterest quickly and safely. Our platform ensures high-quality downloads in multiple resolutions including 1080p, 720p, 480p, 360p, and even audio MP3.</p>
+
+    <h3>Fast and Safe Downloads</h3>
+    <p>All downloads are instant and secure. There’s no need to install additional software. Simply paste your video link, select the desired quality, and click download. Enjoy smooth and fast downloads directly to your device.</p>
+
+    <h3>Supported Platforms</h3>
+    <ul>
+      <li><strong>YouTube:</strong> Download any video or audio in high quality.</li>
+      <li><strong>TikTok:</strong> Save trending TikToks instantly.</li>
+      <li><strong>Instagram:</strong> Download reels, posts, and IGTV videos.</li>
+      <li><strong>X:</strong> Grab videos or threads from Twitter/X easily.</li>
+      <li><strong>Facebook:</strong> Save videos for offline viewing.</li>
+      <li><strong>Pinterest:</strong> Download pins and media directly.</li>
+    </ul>
+
+    <h3>FAQ</h3>
+    <p><strong>Q:</strong> Is Forge Downloader free to use?<br>
+       <strong>A:</strong> Yes! All downloads are completely free for personal use.</p>
+    <p><strong>Q:</strong> Do I need an account?<br>
+       <strong>A:</strong> No registration is required to download content.</p>
+    <p><strong>Q:</strong> Can I download audio only?<br>
+       <strong>A:</strong> Yes, you can select “Audio (MP3)” from the quality options.</p>
+  </div>
+
+  <footer>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="contact.html">Contact</a>
+  </footer>
+
+  <!-- Popup Ad -->
+  <div id="adModal">
+    <div id="adModalContent">
+      <span id="closeAd">&times;</span>
+      <p style="color:var(--accent);font-weight:700;margin:6px 0 10px">Sponsored</p>
+      <img src="https://via.placeholder.com/300x250?text=Pop+Up+Ad" alt="Ad">
+      <div style="margin-top:12px">
+        <button id="adContinueBtn" class="primary-btn">Continue to Download</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="bg.js" defer></script>
+  <script src="theme.js" defer></script>
+  <script src="script.js" defer></script>
+
+</body>
+</html>

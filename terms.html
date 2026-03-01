@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of Service - Forge Downloader</title>
+  <style>
+    :root {
+      --bg-color: #0f0f0f;
+      --text-color: #fff;
+      --btn-bg: rgba(255,255,255,0.1);
+      --btn-hover: rgba(255,255,255,0.2);
+    }
+
+    body {
+      margin:0; 
+      font-family:'Segoe UI',Roboto,sans-serif;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    canvas#bgCanvas {
+      position: fixed;
+      top: 0; left:0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+
+    .container {
+      max-width:800px;
+      margin: 40px auto;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(12px);
+      padding: 30px;
+      border-radius: 20px;
+      color: var(--text-color);
+      text-align:center;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    h1 {
+      font-family:'AesteraBlur-Bold',sans-serif;
+      font-size:2rem;
+      margin-bottom:20px;
+      background: linear-gradient(90deg, #ffd700, #fff);
+      -webkit-background-clip: text;
+      background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation: shine 2s infinite linear;
+    }
+    @keyframes shine { 0% { background-position:-200% 0; } 100% { background-position:200% 0; } }
+
+    p, li { line-height:1.6; margin-bottom: 15px; color: var(--text-color); }
+
+    a.liquid-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+    a.liquid-btn:hover { background: rgba(255,255,255,0.25); }
+
+    /* Theme & Background Toggle Buttons */
+    #themeToggle, #bgToggle {
+      position:absolute; top:20px; cursor:pointer; font-size:1.2rem;
+      background: var(--btn-bg); padding:6px 12px; border-radius:20px; transition:0.3s; z-index:10;
+      color: var(--text-color);
+    }
+    #themeToggle:hover, #bgToggle:hover { background: var(--btn-hover); }
+    #themeToggle { right:20px; }
+    #bgToggle { left:20px; }
+
+    /* Modern Footer Buttons */
+    footer {
+      margin-top: 40px;
+      text-align:center;
+      font-size:0.9rem;
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    footer a {
+      background: rgba(255,255,255,0.08);
+      padding:8px 16px;
+      border-radius:20px;
+      text-decoration:none; /* removed underline */
+      color:#ffd700;
+      transition:background 0.3s, transform 0.2s;
+    }
+    footer a:hover {
+      background: rgba(255,255,255,0.2);
+      transform:translateY(-2px);
+    }
+
+    @media (max-width:600px){
+      .container { margin: 20px 10px; padding:20px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Theme & Background Toggles -->
+  <div id="themeToggle" title="Toggle Theme">🌙</div>
+  <div id="bgToggle" title="Change Background">✨</div>
+
+  <div class="container">
+    <h1>Terms of Service</h1>
+
+    <p>By using Forge Downloader, you agree to the following terms:</p>
+
+    <ul>
+      <li>Forge Downloader supports multiple platforms including YouTube, Instagram, TikTok, X (Twitter), Facebook, and Pinterest. The tool is intended strictly for personal use.</li>
+      <li>You may only download content that you have rights to, or content that is publicly available and permitted by the platform’s terms.</li>
+      <li>We do not claim ownership of any media from these platforms. All trademarks and content belong to their respective owners.</li>
+      <li>You are solely responsible for ensuring that your downloads comply with copyright laws in your country.</li>
+      <li>We are not affiliated with Instagram, TikTok, YouTube, X, Facebook, Pinterest, or any other supported platform.</li>
+      <li>We are not responsible for how downloaded content is used, shared, or redistributed.</li>
+    </ul>
+
+    <p>We may update these terms at any time. Continued use of the website means you accept the latest version of these terms.</p>
+
+    <a href="index.html" class="liquid-btn">Back to Home</a>
+  </div>
+
+  <!-- Modern Footer -->
+  <footer>
+    <a href="about.html">About</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="contact.html">Contact</a>
+  </footer>
+
+  <script src="bg.js"></script>
+  <script src="theme.js"></script>
+</body>
+</html>
