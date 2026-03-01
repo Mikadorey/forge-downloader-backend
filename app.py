@@ -13,16 +13,18 @@ from fastapi.responses import FileResponse, JSONResponse
 
 app = FastAPI(title="Forge Downloader API")
 
-# --- Production CORS (replace with your domains) ---
+# --- ✅ CORS Middleware (fixes browser CORS errors) ---
+# Allows requests only from your frontend domains
 ALLOWED_ORIGINS = [
     "https://forgedownloader.com",
     "https://www.forgedownloader.com"
 ]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=ALLOWED_ORIGINS,   # restrict to your frontend domains
+    allow_credentials=True,
+    allow_methods=["*"],              # allow GET, POST, etc.
+    allow_headers=["*"],              # allow all headers
 )
 
 # --- Storage ---
@@ -129,7 +131,6 @@ async def download(req: DownloadRequest):
             "quiet": True,
             "no_warnings": True
         }
-        # Format selection
         if req.type == "audio":
             ydl_opts["format"] = "bestaudio/best"
             ydl_opts["postprocessors"] = [{
@@ -158,7 +159,6 @@ async def download(req: DownloadRequest):
 
                 ydl.download([req.url])
 
-                # Find output file
                 outfiles = list(DOWNLOADS_DIR.glob(f"{download_id}.*"))
                 if outfiles:
                     filepath = str(outfiles[0].resolve())
@@ -180,7 +180,6 @@ async def download(req: DownloadRequest):
 
     threading.Thread(target=run_download, daemon=True).start()
 
-    # Return download ID & title immediately for frontend
     return {"status": "ok", "download_id": download_id, "title": tasks[download_id]["title"]}
 
 # --- Endpoint: Check Progress ---

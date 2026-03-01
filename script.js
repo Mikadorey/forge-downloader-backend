@@ -4,7 +4,7 @@
 // ================================
 
 // ===== CONFIG =====
-const API_BASE = "https://www.forgedownloader.net/api"; // 🔁 CHANGE if your API path differs
+const API_BASE = "https://forge-downloader-backend-production.up.railway.app"; // 🔁 CHANGE if your API path differs
 const MAX_PROGRESS_RETRIES = 5;
 
 // ===== ELEMENTS =====
