@@ -1,11 +1,11 @@
-# app.py - Production-Ready Forge Downloader Backend
+# app.py - Production-Ready Forge Downloader Backend (CORS + HttpUrl fix)
 import os
 import uuid
 import threading
 import time
 from pathlib import Path
 from typing import Dict, Optional
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, HttpUrl
 import yt_dlp
@@ -13,18 +13,17 @@ from fastapi.responses import FileResponse, JSONResponse
 
 app = FastAPI(title="Forge Downloader API")
 
-# --- ✅ CORS Middleware (fixes browser CORS errors) ---
-# Allows requests only from your frontend domains
+# --- ✅ CORS Middleware ---
 ALLOWED_ORIGINS = [
     "https://forgedownloader.com",
     "https://www.forgedownloader.com"
 ]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS,   # restrict to your frontend domains
+    allow_origins=ALLOWED_ORIGINS,  
     allow_credentials=True,
-    allow_methods=["*"],              # allow GET, POST, etc.
-    allow_headers=["*"],              # allow all headers
+    allow_methods=["*"],              
+    allow_headers=["*"],              
 )
 
 # --- Storage ---
@@ -36,7 +35,7 @@ FILE_RETENTION_SECONDS = 60 * 60  # 1 hour
 tasks: Dict[str, Dict] = {}
 tasks_lock = threading.Lock()
 
-# --- Supported Platforms (for validation) ---
+# --- Supported Platforms ---
 SUPPORTED_DOMAINS = [
     "youtube.com", "youtu.be",
     "tiktok.com",
@@ -49,22 +48,23 @@ SUPPORTED_DOMAINS = [
 # --- Request Models ---
 class DownloadRequest(BaseModel):
     url: HttpUrl
-    type: Optional[str] = "video"  # "video" or "audio"
-    quality: Optional[str] = "best"  # 'best' or specific format_id
+    type: Optional[str] = "video"
+    quality: Optional[str] = "best"
 
 # --- Utility: URL Validation ---
-def is_supported_url(url: str) -> bool:
-    return any(domain in url for domain in SUPPORTED_DOMAINS)
+def is_supported_url(url: HttpUrl) -> bool:
+    url_str = str(url)  # <-- convert HttpUrl object to string
+    return any(domain in url_str for domain in SUPPORTED_DOMAINS)
 
 # --- Endpoint: Get Video Info ---
 @app.post("/get_info")
 async def get_info(req: DownloadRequest):
-    if not is_supported_url(req.url):
-        return JSONResponse(status_code=400, content={"status": "error", "message": "Unsupported platform"})
     try:
+        if not is_supported_url(req.url):
+            return JSONResponse(status_code=400, content={"status": "error", "message": "Unsupported platform"})
         ydl_opts = {"skip_download": True, "quiet": True}
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(req.url, download=False)
+            info = ydl.extract_info(str(req.url), download=False)
             formats = [
                 {
                     "format_id": f.get("format_id"),
@@ -83,104 +83,105 @@ async def get_info(req: DownloadRequest):
                 "duration": info.get("duration"),
                 "formats": formats
             }
-    except Exception:
-        return JSONResponse(status_code=400, content={"status": "error", "message": "Failed to fetch media info"})
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"status": "error", "message": str(e)})
 
 # --- Endpoint: Start Download ---
 @app.post("/download")
 async def download(req: DownloadRequest):
-    if not is_supported_url(req.url):
-        return JSONResponse(status_code=400, content={"status": "error", "message": "Unsupported platform"})
+    try:
+        if not is_supported_url(req.url):
+            return JSONResponse(status_code=400, content={"status": "error", "message": "Unsupported platform"})
 
-    download_id = str(uuid.uuid4())
-    out_template = str(DOWNLOADS_DIR / f"{download_id}.%(ext)s")
+        download_id = str(uuid.uuid4())
+        out_template = str(DOWNLOADS_DIR / f"{download_id}.%(ext)s")
 
-    # Initialize task
-    with tasks_lock:
-        tasks[download_id] = {
-            "status": "queued",
-            "progress": 0.0,
-            "title": None,
-            "filepath": None,
-            "error": None,
-            "cancel": False,
-            "created_at": time.time(),
-            "completed_at": None
-        }
-
-    # --- Progress Hook ---
-    def progress_hook(d):
+        # Initialize task
         with tasks_lock:
-            t = tasks.get(download_id)
-            if not t or t.get("cancel"):
-                return
-            if d.get("status") == "downloading":
-                pct = d.get("percent") or 0.0
-                t["progress"] = max(0.0, min(100.0, float(pct)))
-                t["status"] = "downloading"
-            elif d.get("status") == "finished":
-                t["progress"] = 100.0
-                t["status"] = "downloading"
+            tasks[download_id] = {
+                "status": "queued",
+                "progress": 0.0,
+                "title": None,
+                "filepath": None,
+                "error": None,
+                "cancel": False,
+                "created_at": time.time(),
+                "completed_at": None
+            }
 
-    # --- Download Thread ---
-    def run_download():
-        ydl_opts = {
-            "outtmpl": out_template,
-            "progress_hooks": [progress_hook],
-            "noplaylist": True,
-            "quiet": True,
-            "no_warnings": True
-        }
-        if req.type == "audio":
-            ydl_opts["format"] = "bestaudio/best"
-            ydl_opts["postprocessors"] = [{
-                "key": "FFmpegExtractAudio",
-                "preferredcodec": "mp3",
-                "preferredquality": "192",
-            }]
-        elif req.quality != "best":
-            ydl_opts["format"] = req.quality
-        else:
-            ydl_opts["format"] = "bestvideo+bestaudio/best"
-
-        try:
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(req.url, download=False)
-                title = info.get("title")
-                with tasks_lock:
-                    tasks[download_id]["title"] = title
-
-                # Cancel check
-                with tasks_lock:
-                    if tasks[download_id]["cancel"]:
-                        tasks[download_id]["status"] = "cancelled"
-                        tasks[download_id]["completed_at"] = time.time()
-                        return
-
-                ydl.download([req.url])
-
-                outfiles = list(DOWNLOADS_DIR.glob(f"{download_id}.*"))
-                if outfiles:
-                    filepath = str(outfiles[0].resolve())
-                    with tasks_lock:
-                        tasks[download_id]["filepath"] = filepath
-                        tasks[download_id]["status"] = "done"
-                        tasks[download_id]["progress"] = 100.0
-                        tasks[download_id]["completed_at"] = time.time()
-                else:
-                    with tasks_lock:
-                        tasks[download_id]["status"] = "error"
-                        tasks[download_id]["error"] = "File not found after download"
-                        tasks[download_id]["completed_at"] = time.time()
-        except Exception as e:
+        # Progress hook
+        def progress_hook(d):
             with tasks_lock:
-                tasks[download_id]["status"] = "error"
-                tasks[download_id]["error"] = str(e)
-                tasks[download_id]["completed_at"] = time.time()
+                t = tasks.get(download_id)
+                if not t or t.get("cancel"):
+                    return
+                if d.get("status") == "downloading":
+                    pct = d.get("percent") or 0.0
+                    t["progress"] = max(0.0, min(100.0, float(pct)))
+                    t["status"] = "downloading"
+                elif d.get("status") == "finished":
+                    t["progress"] = 100.0
+                    t["status"] = "downloading"
 
-    threading.Thread(target=run_download, daemon=True).start()
+        # Download thread
+        def run_download():
+            ydl_opts = {
+                "outtmpl": out_template,
+                "progress_hooks": [progress_hook],
+                "noplaylist": True,
+                "quiet": True,
+                "no_warnings": True
+            }
+            if req.type == "audio":
+                ydl_opts["format"] = "bestaudio/best"
+                ydl_opts["postprocessors"] = [{
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3",
+                    "preferredquality": "192",
+                }]
+            elif req.quality != "best":
+                ydl_opts["format"] = req.quality
+            else:
+                ydl_opts["format"] = "bestvideo+bestaudio/best"
 
-    return {"status": "ok", "download_id": download_id, "title": tasks[download_id]["title"]}
+            try:
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(str(req.url), download=False)
+                    title = info.get("title")
+                    with tasks_lock:
+                        tasks[download_id]["title"] = title
+
+                    with tasks_lock:
+                        if tasks[download_id]["cancel"]:
+                            tasks[download_id]["status"] = "cancelled"
+                            tasks[download_id]["completed_at"] = time.time()
+                            return
+
+                    ydl.download([str(req.url)])
+
+                    outfiles = list(DOWNLOADS_DIR.glob(f"{download_id}.*"))
+                    if outfiles:
+                        filepath = str(outfiles[0].resolve())
+                        with tasks_lock:
+                            tasks[download_id]["filepath"] = filepath
+                            tasks[download_id]["status"] = "done"
+                            tasks[download_id]["progress"] = 100.0
+                            tasks[download_id]["completed_at"] = time.time()
+                    else:
+                        with tasks_lock:
+                            tasks[download_id]["status"] = "error"
+                            tasks[download_id]["error"] = "File not found after download"
+                            tasks[download_id]["completed_at"] = time.time()
+            except Exception as e:
+                with tasks_lock:
+                    tasks[download_id]["status"] = "error"
+                    tasks[download_id]["error"] = str(e)
+                    tasks[download_id]["completed_at"] = time.time()
+
+        threading.Thread(target=run_download, daemon=True).start()
+        return {"status": "ok", "download_id": download_id, "title": tasks[download_id]["title"]}
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"status": "error", "message": str(e)})
 
 # --- Endpoint: Check Progress ---
 @app.get("/progress/{download_id}")
